@@ -23,13 +23,23 @@ Install the required Python packages with:
 
     pip3 install -r requirements.txt
 
-## Run the app
+## Run the app without Docker
+
+Quickstart (see below for flags, or use `-h`):
+
+    python3 app.py
+
+## Run the app with Docker
 
 Make sure you have Docker installed locally:
 
     docker -v
     
-Build the image locally with:
+Quickstart:
+
+    make build && make run
+
+Alternatively, build the image locally with:
 
     docker build --tag emoji-app:latest .
     
@@ -37,7 +47,7 @@ Or:
 
     make build
 
-Run the container locally with:
+Then, run the container locally with:
     
     docker run --rm --name emoji-app -p 3001:3001/udp emoji-app:latest
 
@@ -48,7 +58,7 @@ Or:
 Optionally, the following flags can be used: `--n`, `--r`, `--s` and `--h/-h`:
 
 * `--n` Multiply number of emojis by n (`int`, default: `1`)
-* `--r` Disable the translation from keyword to emoji (`bool`, default: `False`)
+* `--r` Disable translation from keyword to emoji (`bool`, default: `False`)
 * `--s` Separator between each emoji (`str`, default: `""`)
 * `--h/-h` See usage information
 
@@ -66,7 +76,7 @@ Send a message and hit enter:
 
 ## Development and testing
 
-Use the `Makefile` you can run `make <cmd>` where `<cmd>` is one of:
+Using the `Makefile` you can run `make <cmd>` where `<cmd>` is one of:
 
 * `sort-imports` to ensure Python imports are in the correct PEP format
 * `format` to format Python files using black

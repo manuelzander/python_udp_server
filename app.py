@@ -11,10 +11,9 @@ from utils import create_parser
 logger = logging.getLogger(__name__)
 coloredlogs.install(level="INFO")
 
-
 # App settings
+APP_HOST = "0.0.0.0"
 APP_PORT = 3001
-TIME_SERVE_SECONDS = 3600  # Serve for 1 hour
 
 TRANSLATION_TABLE = {
     ":thumbsup:": "👍",
@@ -23,16 +22,13 @@ TRANSLATION_TABLE = {
     ":crossed:": "🤞",
 }
 
-# Need these for static type checking with mypy
-multiplier: int
-separator: str
-translation_toggle: bool
-
-
 # For further reference see https://docs.python.org/3.7/library/asyncio-protocol.html#udp-echo-client
-class EchoServerProtocol(asyncio.BaseProtocol):
-    def __init__(self) -> None:
+class MessagePrinterServerProtocol(asyncio.BaseProtocol):
+    def __init__(self, n: int, s: str, r: bool) -> None:
         super().__init__()
+        self.multiplier = n
+        self.separator = s
+        self.translation_toggle = r
 
     def connection_made(self, transport) -> None:  # type: ignore
         self.transport = transport
@@ -40,56 +36,66 @@ class EchoServerProtocol(asyncio.BaseProtocol):
     def datagram_received(self, data, addr) -> None:  # type: ignore
         message = data.decode()
         logger.debug(f"Received message: '{message}' from addr: {addr}")
-        response = generate_response(message)
-        logger.debug(f"Generated response: '{response}'")
-        print(response)
+
+        formatted_message = format_message(
+            message, self.multiplier, self.separator, self.translation_toggle
+        )
+
+        # Print main output of application to stdout
+        print(formatted_message)
 
 
-def generate_response(message: str) -> Union[str, Any]:
-    logger.debug(f"Generating response for message: {message}")
+def handle_error(message: str) -> Union[str, Any]:
+    logger.warning(f"Unknown command: {message}")
+    return f"Unknown command: {message}"
+
+
+def format_message(
+    message: str, multiplier: int, separator: str, translation_toggle: bool
+) -> Union[str, Any]:
+    logger.debug(f"Formatting message: {message}")
+
+    params = message.split()
+
+    if len(params) > 2:
+        return handle_error(message)
 
     try:
-        params = message.split()
-        int(params[0])
-    except Exception as e:
-        logger.error(f"Unknown command: {message}")
-        return f"Unknown command: {message}"
+        nb_repetitions, command = int(params[0]), params[1]
+        text = TRANSLATION_TABLE[command]
+    except (ValueError, KeyError, IndexError) as e:
+        return handle_error(message)
 
-    if params[1] not in TRANSLATION_TABLE:
-        logger.error(f"Unknown command: {message}")
-        return f"Unknown command: {message}"
-
-    number = int(params[0]) * multiplier
-    text = TRANSLATION_TABLE[params[1]] if not translation_toggle else params[1]
-    repsonse = number * [text]
-    return separator.join(repsonse)
-
-
-async def start_udp_server(host: str = "0.0.0.0", port: int = APP_PORT) -> None:
-    logger.info(f"Starting UDP server listening on: {host}:{port}")
-
-    loop = asyncio.get_running_loop()
-    transport, protocol = await loop.create_datagram_endpoint(
-        lambda: EchoServerProtocol(), local_addr=(host, port)
+    response = (
+        nb_repetitions * multiplier * [text if not translation_toggle else command]
     )
 
-    try:
-        await asyncio.sleep(TIME_SERVE_SECONDS)
-    finally:
-        transport.close()
+    formatted_message = separator.join(response)
+    logger.debug(f"Formatted message: '{formatted_message}'")
+    return formatted_message
 
 
 def main() -> None:
     parser = create_parser()
     args = parser.parse_args()
     logger.debug(f"Running with args: n: {args.n}, s: {args.s}, r: {args.r}")
+    logger.info(f"Starting UDP server listening on: {APP_HOST}:{APP_PORT}")
 
-    global multiplier, separator, translation_toggle
-    multiplier = args.n
-    separator = args.s
-    translation_toggle = args.r
+    loop = asyncio.get_event_loop()
+    transport, protocol = loop.run_until_complete(
+        loop.create_datagram_endpoint(
+            lambda: MessagePrinterServerProtocol(args.n, args.s, args.r),
+            local_addr=(APP_HOST, APP_PORT),
+        )
+    )
 
-    asyncio.run(start_udp_server())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        transport.close()
+        loop.close()
 
 
 if __name__ == "__main__":
