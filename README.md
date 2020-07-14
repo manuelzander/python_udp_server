@@ -23,26 +23,46 @@ Install the required Python packages with:
 
     pip3 install -r requirements.txt
 
-
 ## Run the app
 
-The `Dockerfile` can be used to build an image and deploy it locally:
-Make sure you have Docker installed:
+Make sure you have Docker installed locally:
 
     docker -v
     
-Build the image with:
+Build the image locally with:
 
     docker build --tag emoji-app:latest .
     
-Run the container locally:
-    
-    docker run --name emoji-app:latest -p 3001:3001 app
-    
-You can now trigger the endpoint (`localhost:3001`), for example using `nc`.
+Or:
 
-<!-- TODO -->
-<!-- Include usage info -->
+    make build
+
+Run the container locally with:
+    
+    docker run --rm --name emoji-app -p 3001:3001/udp emoji-app:latest
+
+Or:
+
+    make run
+
+Optionally, the following flags can be used: `--n`, `--r`, `--s` and `--h/-h`:
+
+* `--n` Multiply number of emojis by n (`int`, default: `1`)
+* `--r` Disable the translation from keyword to emoji (`bool`, default: `False`)
+* `--s` Separator between each emoji (`str`, default: `""`)
+* `--h/-h` See usage information
+
+For example:
+
+    docker run --rm --name emoji-app -p 3001:3001/udp emoji-app:latest --n 2 --r True --s "+"
+    
+In another shell session, you can now trigger the endpoint (`0.0.0.0:3001`), for example using `nc`:
+
+    nc -u 0.0.0.0 3001
+
+Send a message and hit enter:
+
+    2 :ok:
 
 ## Development and testing
 
