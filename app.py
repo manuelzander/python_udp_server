@@ -2,7 +2,6 @@
 
 import asyncio
 import logging
-from typing import Any, Union
 
 import coloredlogs
 
@@ -45,14 +44,14 @@ class MessagePrinterServerProtocol(asyncio.BaseProtocol):
         print(formatted_message)
 
 
-def handle_error(message: str) -> Union[str, Any]:
+def handle_error(message: str) -> str:
     logger.warning(f"Unknown command: {message}")
     return f"Unknown command: {message}"
 
 
 def format_message(
     message: str, multiplier: int, separator: str, translation_toggle: bool
-) -> Union[str, Any]:
+) -> str:
     logger.debug(f"Formatting message: {message}")
 
     params = message.split()
@@ -63,7 +62,7 @@ def format_message(
     try:
         nb_repetitions, command = int(params[0]), params[1]
         text = TRANSLATION_TABLE[command]
-    except (ValueError, KeyError, IndexError) as e:
+    except (ValueError, KeyError, IndexError):
         return handle_error(message)
 
     response = (
