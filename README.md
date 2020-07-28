@@ -29,6 +29,8 @@ Quickstart (see below for flags, or use `-h`):
 
     python3 app.py
 
+Stop with Ctrl+C.
+
 ## Run the app with Docker
 
 Make sure you have Docker installed locally:
