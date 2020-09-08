@@ -1,5 +1,7 @@
 # Python UDP server using asyncio
 
+![python_udp_server](https://github.com/manuelzander/python_udp_server/workflows/python_udp_server/badge.svg?branch=master)
+
 This small project comprises a simple Python UDP server plus Dockerfile, as well as a (hopefully) useful Makefile and unittests.
 
 The server makes use of the `asyncio` library to allow for asynchronous request handling.
