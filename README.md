@@ -1,4 +1,8 @@
-# zoe_challenge
+# Python UDP server using asyncio
+
+This small project comprises a simple Python UDP server plus Dockerfile, as well as a (hopefully) useful Makefile and unittests.
+
+The server makes use of the `asyncio` library to allow for asynchronous request handling.
 
 ## Prerequisites
 
@@ -80,14 +84,16 @@ Send a message and hit enter:
 
 Using the `Makefile` you can run `make <cmd>` where `<cmd>` is one of:
 
-* `sort-imports` to ensure Python imports are in the correct PEP format
-* `format` to format Python files using black
-* `type-check` to run `mypy` static type checking
+* `sort-imports` to ensure Python imports are in the correct PEP format/order
+* `format` to format Python files using `black`
+* `type-check` to run static type checking using `mypy`
 * `test` to run unittests using `pytest`
-* `all` to run all the above steps
-
-or just type `make`/`make all`, which will run all of the above.
+* `all` to run all steps (or just type `make`)
 
 ## Authors
 
 * Manuel Zander
+
+## Acknowledgments
+
+Many thanks to [julvo](https://github.com/julvo) for a review and some great suggestions during development of this software! 😊
