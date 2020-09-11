@@ -1,6 +1,6 @@
 # Python UDP server using asyncio
 
-![python_udp_server](https://github.com/manuelzander/python_udp_server/workflows/python_udp_server/badge.svg?branch=master)
+![status](https://img.shields.io/github/workflow/status/manuelzander/python_udp_server/python_udp_server/master?label=actions&logo=github&style=for-the-badge) ![last-commit](https://img.shields.io/github/last-commit/manuelzander/python_udp_server/master?logo=github&style=for-the-badge) ![issues-pr-raw](https://img.shields.io/github/issues-pr-raw/manuelzander/python_udp_server?label=open%20prs&logo=github&style=for-the-badge) ![release](https://img.shields.io/github/v/release/manuelzander/python_udp_server?&style=for-the-badge) [![license](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 This small project comprises a simple Python UDP server plus Dockerfile, as well as a (hopefully) useful Makefile and unittests.
 
