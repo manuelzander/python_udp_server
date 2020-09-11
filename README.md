@@ -8,6 +8,8 @@ The server makes use of the `asyncio` library to allow for asynchronous request 
 
 ## Prerequisites
 
+![python](https://img.shields.io/badge/python-3.7-blue?style=for-the-badge&logo=python&logoColor=white)
+
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 The code is run and tested with Python 3.7.7 on macOS 10.14.6.
@@ -98,4 +100,4 @@ Using the `Makefile` you can run `make <cmd>` where `<cmd>` is one of:
 
 ## Acknowledgments
 
-Many thanks to [julvo](https://github.com/julvo) for a review and some great suggestions during development of this software! 😊
+Many thanks to [julvo](https://github.com/julvo) for his review and great suggestions during development of this software 😊
