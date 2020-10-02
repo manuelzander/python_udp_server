@@ -98,6 +98,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    logger.debug(f"Running {__file__}")
-    logger.debug(f"APP_PORT: {APP_PORT}")
     main()
