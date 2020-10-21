@@ -4,7 +4,9 @@
 
 This small project comprises a simple Python UDP server plus Dockerfile, as well as a (hopefully) useful Makefile and unittests.
 
-The server makes use of the `asyncio` library to allow for asynchronous request handling.
+The server makes use of the `asyncio` and `uvloop` libraries to allow for fast, asynchronous request handling.
+
+Check out [this blog post](http://magic.io/blog/uvloop-blazing-fast-python-networking/) if you're interested in more performance details.
 
 ## Prerequisites
 

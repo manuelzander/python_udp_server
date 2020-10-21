@@ -17,7 +17,7 @@ def create_parser() -> ArgumentParser:
         default="",
         type=str,
         required=False,
-        help="Separator between each emoji (str, default: "")",
+        help="Separator between each emoji (str, default: '')",
     )
     parser.add_argument(
         "--r",

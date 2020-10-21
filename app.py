@@ -4,6 +4,7 @@ import asyncio
 import logging
 
 import coloredlogs
+import uvloop
 
 from utils import create_parser
 
@@ -20,6 +21,7 @@ TRANSLATION_TABLE = {
     ":ok:": "👌",
     ":crossed:": "🤞",
 }
+
 
 # For further reference see https://docs.python.org/3.7/library/asyncio-protocol.html#udp-echo-client
 class MessagePrinterServerProtocol(asyncio.BaseProtocol):
@@ -81,6 +83,8 @@ def main() -> None:
     logger.info(f"Starting UDP server listening on: {APP_HOST}:{APP_PORT}")
 
     loop = asyncio.get_event_loop()
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+
     transport, protocol = loop.run_until_complete(
         loop.create_datagram_endpoint(
             lambda: MessagePrinterServerProtocol(args.n, args.s, args.r),
